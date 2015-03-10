@@ -24,7 +24,7 @@ function demo() {
 		}
 	};
 	image.crossOrigin = "anonymous";
-	image.src="/pp_404/images/00633_oceanhope_1680x1050.jpg";
+	image.src="http://rampantlions.github.io/assets/images/00633_oceanhope_1680x1050.jpg";
 
 	var youtube = getURLParameter("youtube");
 	if (youtube) {
