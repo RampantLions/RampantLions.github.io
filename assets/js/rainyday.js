@@ -7,8 +7,8 @@
  * @param opacity opacity attribute value of the glass canvas (default: 1)
  * @param blur blur radius (default: 20)
  */
-
-function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
+function RainyDay(canvasid, sourceid, width, height, opacity, blur)
+{
 	this.canvasid = canvasid;
 	this.canvas = document.getElementById(canvasid);
 
@@ -64,19 +64,22 @@ function RainyDay(canvasid, sourceid, width, height, opacity, blur) {
 
 }
 
-RainyDay.prototype.animateDrops = function() {
+RainyDay.prototype.animateDrops = function ()
+{
 	var raf = window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
 		window.mozRequestAnimationFrame ||
-			function(callback) {
-				window.setTimeout(callback, 1000 / this.rainyday.VARIABLE_FPS);
+		function (callback)
+		{
+			window.setTimeout(callback, 1000 / this.rainyday.VARIABLE_FPS);
 		};
 	if (this.addDropCallback)
 		this.addDropCallback();
 	// |this.drops| array may be changed as we iterate over drops
 	var dropsClone = this.drops.slice();
 	var newDrops = [];
-	for (var i = 0; i < dropsClone.length; ++i) {
+	for (var i = 0; i < dropsClone.length; ++i)
+	{
 		if (dropsClone[i].animate())
 			newDrops.push(dropsClone[i]);
 	}
@@ -87,7 +90,8 @@ RainyDay.prototype.animateDrops = function() {
 /**
  * Create the helper canvas for rendering raindrop reflections.
  */
-RainyDay.prototype.prepareReflections = function() {
+RainyDay.prototype.prepareReflections = function ()
+{
 	// new canvas
 	this.reflected = document.createElement('canvas');
 	this.reflected.width = this.canvas.width / this.REFLECTION_SCALEDOWN_FACTOR;
@@ -101,7 +105,8 @@ RainyDay.prototype.prepareReflections = function() {
 /**
  * Create the glass canvas and position it directly over the main one.
  */
-RainyDay.prototype.prepareGlass = function() {
+RainyDay.prototype.prepareGlass = function ()
+{
 	this.glass = document.createElement('canvas');
 	this.glass.width = this.canvas.width;
 	this.glass.height = this.canvas.height;
@@ -115,7 +120,8 @@ RainyDay.prototype.prepareGlass = function() {
  * @param quan probability of selecting this preset (must be between 0 and 1)
  * @returns present object with given attributes
  */
-RainyDay.prototype.preset = function(min, base, quan) {
+RainyDay.prototype.preset = function (min, base, quan)
+{
 	return {
 		"min": min,
 		"base": base,
@@ -128,13 +134,16 @@ RainyDay.prototype.preset = function(min, base, quan) {
  * @param presets list of presets to be applied
  * @param speed speed of the animation (if not provided or 0 static image will be generated)
  */
-RainyDay.prototype.rain = function(presets, speed) {
+RainyDay.prototype.rain = function (presets, speed)
+{
 	// prepare canvas for drop reflections
-	if (this.reflection != this.REFLECTION_NONE) {
+	if (this.reflection != this.REFLECTION_NONE)
+	{
 		this.prepareReflections();
 	}
 
-	if (speed > 0) {
+	if (speed > 0)
+	{
 		// animation
 		this.presets = presets;
 
@@ -142,44 +151,54 @@ RainyDay.prototype.rain = function(presets, speed) {
 		this.PRIVATE_GRAVITY_FORCE_FACTOR_X = ((Math.PI / 2) - this.VARIABLE_GRAVITY_ANGLE) * (this.VARIABLE_FPS * 0.005) / 50;
 
 		// prepare gravity matrix
-		if (this.VARIABLE_COLLISIONS) {
+		if (this.VARIABLE_COLLISIONS)
+		{
 
 			// calculate max radius of a drop to establish gravity matrix resolution
 			var maxDropRadius = 0;
-			for (var i = 0; i < presets.length; i++) {
-				if (presets[i].base + presets[i].min > maxDropRadius) {
+			for (var i = 0; i < presets.length; i++)
+			{
+				if (presets[i].base + presets[i].min > maxDropRadius)
+				{
 					maxDropRadius = Math.floor(presets[i].base + presets[i].min);
 				}
 			}
 
-			if (maxDropRadius > 0) {
+			if (maxDropRadius > 0)
+			{
 				// initialize the gravity matrix
 				var mwi = Math.ceil(this.w / maxDropRadius);
 				var mhi = Math.ceil(this.h / maxDropRadius);
 				this.matrix = new CollisionMatrix(mwi, mhi, maxDropRadius);
-			} else {
+			}
+			else
+			{
 				this.VARIABLE_COLLISIONS = false;
 			}
 		}
 		var lastExecutionTime = 0;
-		this.addDropCallback = function() {
+		this.addDropCallback = function ()
+		{
 			var timestamp = new Date().getTime();
 			if (timestamp - lastExecutionTime < speed)
 				return;
 			lastExecutionTime = timestamp;
 			var context = this.canvas.getContext("2d");
-			context.clearRect(0,0,this.canvas.width,this.canvas.height);
+			context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 			context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
 			var random = Math.random();
 			// select matching preset
 			var preset;
-			for (var i = 0; i < presets.length; i++) {
-				if (random < presets[i].quan) {
+			for (var i = 0; i < presets.length; i++)
+			{
+				if (random < presets[i].quan)
+				{
 					preset = presets[i];
 					break;
 				}
 			}
-			if (preset) {
+			if (preset)
+			{
 				this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, preset.min, preset.base));
 			}
 			context.save();
@@ -188,11 +207,15 @@ RainyDay.prototype.rain = function(presets, speed) {
 			context.restore();
 		}.bind(this);
 
-	} else {
+	}
+	else
+	{
 		// static picture
-		for (var i = 0; i < presets.length; i++) {
+		for (var i = 0; i < presets.length; i++)
+		{
 			var preset = presets[i];
-			for (var c = 0; c < preset.quan; ++c) {
+			for (var c = 0; c < preset.quan; ++c)
+			{
 				this.putDrop(new Drop(this, Math.random() * this.w, Math.random() * this.h, preset.min, preset.base));
 			}
 		}
@@ -203,11 +226,14 @@ RainyDay.prototype.rain = function(presets, speed) {
  * Adds a new raindrop to the animation.
  * @param drop drop object to be added to the animation
  */
-RainyDay.prototype.putDrop = function(drop) {
+RainyDay.prototype.putDrop = function (drop)
+{
 	drop.draw();
-	if (this.gravity && drop.r1 > this.VARIABLE_GRAVITY_THRESHOLD) {
+	if (this.gravity && drop.r1 > this.VARIABLE_GRAVITY_THRESHOLD)
+	{
 
-		if (this.VARIABLE_COLLISIONS) {
+		if (this.VARIABLE_COLLISIONS)
+		{
 			// put on the gravity matrix
 			this.matrix.update(drop);
 		}
@@ -216,9 +242,11 @@ RainyDay.prototype.putDrop = function(drop) {
 	}
 };
 
-RainyDay.prototype.clearDrop = function(drop, force) {
+RainyDay.prototype.clearDrop = function (drop, force)
+{
 	var result = drop.clear(force);
-	if (result) {
+	if (result)
+	{
 		var index = this.drops.indexOf(drop);
 		if (index >= 0)
 			this.drops.splice(index, 1);
@@ -231,7 +259,8 @@ RainyDay.prototype.clearDrop = function(drop, force) {
  * @param iterations number of iterations applied to the size approximation algorithm
  * @returns list of points approximating a circle shape
  */
-RainyDay.prototype.getLinepoints = function(iterations) {
+RainyDay.prototype.getLinepoints = function (iterations)
+{
 	var pointList = {};
 	pointList.first = {
 		x: 0,
@@ -248,9 +277,11 @@ RainyDay.prototype.getLinepoints = function(iterations) {
 	var dx, newX, newY;
 
 	pointList.first.next = lastPoint;
-	for (var i = 0; i < iterations; i++) {
+	for (var i = 0; i < iterations; i++)
+	{
 		point = pointList.first;
-		while (point.next != null) {
+		while (point.next != null)
+		{
 			nextPoint = point.next;
 
 			dx = nextPoint.x - point.x;
@@ -264,9 +295,12 @@ RainyDay.prototype.getLinepoints = function(iterations) {
 			};
 
 			//min, max
-			if (newY < minY) {
+			if (newY < minY)
+			{
 				minY = newY;
-			} else if (newY > maxY) {
+			}
+			else if (newY > maxY)
+			{
 				maxY = newY;
 			}
 
@@ -279,16 +313,21 @@ RainyDay.prototype.getLinepoints = function(iterations) {
 	}
 
 	//normalize to values between 0 and 1
-	if (maxY != minY) {
+	if (maxY != minY)
+	{
 		var normalizeRate = 1 / (maxY - minY);
 		point = pointList.first;
-		while (point != null) {
+		while (point != null)
+		{
 			point.y = normalizeRate * (point.y - minY);
 			point = point.next;
 		}
-	} else {
+	}
+	else
+	{
 		point = pointList.first;
-		while (point != null) {
+		while (point != null)
+		{
 			point.y = 1;
 			point = point.next;
 		}
@@ -306,7 +345,8 @@ RainyDay.prototype.getLinepoints = function(iterations) {
  * @param base base value for randomizing drop size
  */
 
-function Drop(rainyday, centerX, centerY, min, base) {
+function Drop(rainyday, centerX, centerY, min, base)
+{
 	this.x = Math.floor(centerX);
 	this.y = Math.floor(centerY);
 	this.r1 = (Math.random() * base) + min;
@@ -321,7 +361,8 @@ function Drop(rainyday, centerX, centerY, min, base) {
 /**
  * Draws a raindrop on canvas at the current position.
  */
-Drop.prototype.draw = function() {
+Drop.prototype.draw = function ()
+{
 	var phase = 0;
 	var point;
 	var rad, theta;
@@ -335,7 +376,8 @@ Drop.prototype.draw = function() {
 	x0 = this.x + rad * Math.cos(theta);
 	y0 = this.y + rad * Math.sin(theta);
 	this.context.lineTo(x0, y0);
-	while (point.next != null) {
+	while (point.next != null)
+	{
 		point = point.next;
 		theta = (Math.PI * 2 * point.x) + phase;
 		rad = this.r2 + 0.5 * Math.random() * (this.r2 - this.r1);
@@ -346,7 +388,8 @@ Drop.prototype.draw = function() {
 
 	this.context.clip();
 
-	if (this.rainyday.reflection) {
+	if (this.rainyday.reflection)
+	{
 		this.rainyday.reflection(this);
 	}
 
@@ -358,18 +401,22 @@ Drop.prototype.draw = function() {
  * @param force force stop
  * @returns true if the animation is stopped
  */
-Drop.prototype.clear = function(force) {
+Drop.prototype.clear = function (force)
+{
 	this.context.clearRect(this.x - this.r1 - 1, this.y - this.r1 - 1, 2 * this.r1 + 2, 2 * this.r1 + 2);
-	if (force) {
+	if (force)
+	{
 		// forced
 		this.terminate = true;
 		return true;
 	}
-	if (this.y - this.r1 > this.rainyday.h) {
+	if (this.y - this.r1 > this.rainyday.h)
+	{
 		// over the bottom edge, stop the thread
 		return true;
 	}
-	if ((this.x - this.r1 > this.rainyday.w) || (this.x + this.r1 < 0)) {
+	if ((this.x - this.r1 > this.rainyday.w) || (this.x + this.r1 < 0))
+	{
 		// over the right or left edge, stop the thread
 		return true;
 	}
@@ -379,17 +426,22 @@ Drop.prototype.clear = function(force) {
 /**
  * Moves the raindrop to a new position according to the gravity.
  */
-Drop.prototype.animate = function() {
-	if (this.terminate) {
+Drop.prototype.animate = function ()
+{
+	if (this.terminate)
+	{
 		return false;
 	}
 	var stopped = this.rainyday.gravity(this);
-	if (!stopped && this.rainyday.trail) {
+	if (!stopped && this.rainyday.trail)
+	{
 		this.rainyday.trail(this);
 	}
-	if (this.rainyday.VARIABLE_COLLISIONS) {
+	if (this.rainyday.VARIABLE_COLLISIONS)
+	{
 		var collisions = this.rainyday.matrix.update(this, stopped);
-		if (collisions) {
+		if (collisions)
+		{
 			this.rainyday.collision(this, collisions);
 		}
 	}
@@ -400,7 +452,7 @@ Drop.prototype.animate = function() {
  * Merge linepoints with another drop
  * @param drop the other drop
  */
-Drop.prototype.merge = function(drop) {
+Drop.prototype.merge = function (drop) {
 
 };
 
@@ -408,7 +460,8 @@ Drop.prototype.merge = function(drop) {
  * TRAIL function: no trail at all
  * @param drop raindrop object
  */
-RainyDay.prototype.TRAIL_NONE = function(drop) {
+RainyDay.prototype.TRAIL_NONE = function (drop)
+{
 	// nothing going on here
 };
 
@@ -416,8 +469,10 @@ RainyDay.prototype.TRAIL_NONE = function(drop) {
  * TRAIL function: trail of small drops (default)
  * @param drop raindrop object
  */
-RainyDay.prototype.TRAIL_DROPS = function(drop) {
-	if (!drop.trail_y || drop.y - drop.trail_y >= Math.random() * 10 * drop.r1) {
+RainyDay.prototype.TRAIL_DROPS = function (drop)
+{
+	if (!drop.trail_y || drop.y - drop.trail_y >= Math.random() * 10 * drop.r1)
+	{
 		drop.trail_y = drop.y;
 		this.putDrop(new Drop(this, drop.x, drop.y - drop.r1 - 5, 0, Math.ceil(drop.r1 / 5)));
 	}
@@ -427,11 +482,13 @@ RainyDay.prototype.TRAIL_DROPS = function(drop) {
  * TRAIL function: trail of unblurred image
  * @param drop raindrop object
  */
-RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
+RainyDay.prototype.TRAIL_SMUDGE = function (drop)
+{
 	var context = this.canvas.getContext('2d');
 	var y = drop.y - drop.r1 - 2;
 	var x = drop.x - drop.r2 + (Math.random() * 2);
-	if (y < 0 || x < 0) {
+	if (y < 0 || x < 0)
+	{
 		return;
 	}
 	var w = drop.r2;
@@ -448,7 +505,8 @@ RainyDay.prototype.TRAIL_SMUDGE = function(drop) {
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
-RainyDay.prototype.GRAVITY_NONE = function(drop) {
+RainyDay.prototype.GRAVITY_NONE = function (drop)
+{
 	return true;
 };
 
@@ -457,15 +515,20 @@ RainyDay.prototype.GRAVITY_NONE = function(drop) {
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
-RainyDay.prototype.GRAVITY_LINEAR = function(drop) {
-	if (this.clearDrop(drop)) {
+RainyDay.prototype.GRAVITY_LINEAR = function (drop)
+{
+	if (this.clearDrop(drop))
+	{
 		return true;
 	}
 
-	if (drop.yspeed) {
+	if (drop.yspeed)
+	{
 		drop.yspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r1);
 		drop.xspeed += this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r1);
-	} else {
+	}
+	else
+	{
 		drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
 		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
 	}
@@ -480,17 +543,22 @@ RainyDay.prototype.GRAVITY_LINEAR = function(drop) {
  * @param drop raindrop object
  * @returns true if the animation is stopped
  */
-RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
-	if (this.clearDrop(drop)) {
+RainyDay.prototype.GRAVITY_NON_LINEAR = function (drop)
+{
+	if (this.clearDrop(drop))
+	{
 		return true;
 	}
 
-	if (drop.collided) {
+	if (drop.collided)
+	{
 		drop.collided = false;
 		drop.seed = Math.floor(drop.r1 * Math.random() * this.VARIABLE_FPS);
 		drop.skipping = false;
 		drop.slowing = false;
-	} else if (!drop.seed || drop.seed < 0) {
+	}
+	else if (!drop.seed || drop.seed < 0)
+	{
 		drop.seed = Math.floor(drop.r1 * Math.random() * this.VARIABLE_FPS);
 		drop.skipping = drop.skipping == false ? true : false;
 		drop.slowing = true;
@@ -498,27 +566,37 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
 
 	drop.seed--;
 
-	if (drop.yspeed) {
-		if (drop.slowing) {
+	if (drop.yspeed)
+	{
+		if (drop.slowing)
+		{
 			drop.yspeed /= 1.1;
 			drop.xspeed /= 1.1;
-			if (drop.yspeed < this.PRIVATE_GRAVITY_FORCE_FACTOR_Y) {
+			if (drop.yspeed < this.PRIVATE_GRAVITY_FORCE_FACTOR_Y)
+			{
 				drop.slowing = false;
 			}
 
-		} else if (drop.skipping) {
+		}
+		else if (drop.skipping)
+		{
 			drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
 			drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
-		} else {
+		}
+		else
+		{
 			drop.yspeed += 1 * this.PRIVATE_GRAVITY_FORCE_FACTOR_Y * Math.floor(drop.r1);
 			drop.xspeed += 1 * this.PRIVATE_GRAVITY_FORCE_FACTOR_X * Math.floor(drop.r1);
 		}
-	} else {
+	}
+	else
+	{
 		drop.yspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_Y;
 		drop.xspeed = this.PRIVATE_GRAVITY_FORCE_FACTOR_X;
 	}
 
-	if (this.VARIABLE_GRAVITY_ANGLE_VARIANCE != 0) {
+	if (this.VARIABLE_GRAVITY_ANGLE_VARIANCE != 0)
+	{
 		drop.xspeed += ((Math.random() * 2 - 1) * this.VARIABLE_GRAVITY_ANGLE_VARIANCE);
 	}
 
@@ -533,7 +611,8 @@ RainyDay.prototype.GRAVITY_NON_LINEAR = function(drop) {
  * REFLECTION function: no reflection at all
  * @param drop raindrop object
  */
-RainyDay.prototype.REFLECTION_NONE = function(drop) {
+RainyDay.prototype.REFLECTION_NONE = function (drop)
+{
 	this.context.fillStyle = this.VARIABLE_FILL_STYLE;
 	this.context.fill();
 };
@@ -542,7 +621,8 @@ RainyDay.prototype.REFLECTION_NONE = function(drop) {
  * REFLECTION function: miniature reflection (default)
  * @param drop raindrop object
  */
-RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
+RainyDay.prototype.REFLECTION_MINIATURE = function (drop)
+{
 	// this maps the area of size (REFLECTION_DROP_MAPPING_WIDTH * 2, REFLECTION_DROP_MAPPING_HEIGHT * 2)
 	// around point (drop.x, drop.y) into the drop area
 	var sx = Math.max((drop.x - this.REFLECTION_DROP_MAPPING_WIDTH) / this.REFLECTION_SCALEDOWN_FACTOR, 0);
@@ -564,28 +644,35 @@ RainyDay.prototype.REFLECTION_MINIATURE = function(drop) {
  * @param drop one of the drops colliding
  * @param colllisions list of potential collisions
  */
-RainyDay.prototype.COLLISION_SIMPLE = function(drop, collisions) {
+RainyDay.prototype.COLLISION_SIMPLE = function (drop, collisions)
+{
 	var item = collisions;
 	var drop2;
-	while (item != null) {
+	while (item != null)
+	{
 		var p = item.drop;
-		if (Math.sqrt(Math.pow(drop.x - p.x, 2) + Math.pow(drop.y - p.y, 2)) < (drop.r1 + p.r1)) {
+		if (Math.sqrt(Math.pow(drop.x - p.x, 2) + Math.pow(drop.y - p.y, 2)) < (drop.r1 + p.r1))
+		{
 			drop2 = p;
 			break;
 		}
 		item = item.next;
 	}
 
-	if (!drop2) {
+	if (!drop2)
+	{
 		return;
 	}
 
 	// rename so that we're dealing with low/high drops
 	var higher, lower;
-	if (drop.y > drop2.y) {
+	if (drop.y > drop2.y)
+	{
 		higher = drop;
 		lower = drop2;
-	} else {
+	}
+	else
+	{
 		higher = drop2;
 		lower = drop;
 	}
@@ -646,13 +733,17 @@ var shg_table = [
  * @param width width of the canvas
  * @param height height of the canvas
  */
-RainyDay.prototype.prepareBackground = function(width, height) {
-	if (width && height) {
+RainyDay.prototype.prepareBackground = function (width, height)
+{
+	if (width && height)
+	{
 		this.canvas.style.width = width + "px";
 		this.canvas.style.height = height + "px";
 		this.canvas.width = width;
 		this.canvas.height = height;
-	} else {
+	}
+	else
+	{
 		width = this.canvas.width;
 		height = this.canvas.height;
 	}
@@ -678,7 +769,8 @@ RainyDay.prototype.prepareBackground = function(width, height) {
  * @param height height of the canvas
  * @param radius blur radius
  */
-RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, radius) {
+RainyDay.prototype.stackBlurCanvasRGB = function (top_x, top_y, width, height, radius)
+{
 	radius |= 0;
 
 	var context = this.background.getContext("2d");
@@ -700,7 +792,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 
 	var stackStart = new BlurStack();
 	var stack = stackStart;
-	for (i = 1; i < div; i++) {
+	for (i = 1; i < div; i++)
+	{
 		stack = stack.next = new BlurStack();
 		if (i == radiusPlus1) var stackEnd = stack;
 	}
@@ -713,7 +806,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 	var mul_sum = mul_table[radius];
 	var shg_sum = shg_table[radius];
 
-	for (y = 0; y < height; y++) {
+	for (y = 0; y < height; y++)
+	{
 		r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
 
 		r_out_sum = radiusPlus1 * (pr = pixels[yi]);
@@ -726,14 +820,16 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 
 		stack = stackStart;
 
-		for (i = 0; i < radiusPlus1; i++) {
+		for (i = 0; i < radiusPlus1; i++)
+		{
 			stack.r = pr;
 			stack.g = pg;
 			stack.b = pb;
 			stack = stack.next;
 		}
 
-		for (i = 1; i < radiusPlus1; i++) {
+		for (i = 1; i < radiusPlus1; i++)
+		{
 			p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
 			r_sum += (stack.r = (pr = pixels[p])) * (rbs = radiusPlus1 - i);
 			g_sum += (stack.g = (pg = pixels[p + 1])) * rbs;
@@ -748,7 +844,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 
 		stackIn = stackStart;
 		stackOut = stackEnd;
-		for (x = 0; x < width; x++) {
+		for (x = 0; x < width; x++)
+		{
 			pixels[yi] = (r_sum * mul_sum) >> shg_sum;
 			pixels[yi + 1] = (g_sum * mul_sum) >> shg_sum;
 			pixels[yi + 2] = (b_sum * mul_sum) >> shg_sum;
@@ -788,8 +885,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 		yw += width;
 	}
 
-
-	for (x = 0; x < width; x++) {
+	for (x = 0; x < width; x++)
+	{
 		g_in_sum = b_in_sum = r_in_sum = g_sum = b_sum = r_sum = 0;
 
 		yi = x << 2;
@@ -803,7 +900,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 
 		stack = stackStart;
 
-		for (i = 0; i < radiusPlus1; i++) {
+		for (i = 0; i < radiusPlus1; i++)
+		{
 			stack.r = pr;
 			stack.g = pg;
 			stack.b = pb;
@@ -812,7 +910,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 
 		yp = width;
 
-		for (i = 1; i <= radius; i++) {
+		for (i = 1; i <= radius; i++)
+		{
 			yi = (yp + x) << 2;
 
 			r_sum += (stack.r = (pr = pixels[yi])) * (rbs = radiusPlus1 - i);
@@ -825,7 +924,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 
 			stack = stack.next;
 
-			if (i < heightMinus1) {
+			if (i < heightMinus1)
+			{
 				yp += width;
 			}
 		}
@@ -833,7 +933,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
 		yi = x;
 		stackIn = stackStart;
 		stackOut = stackEnd;
-		for (y = 0; y < height; y++) {
+		for (y = 0; y < height; y++)
+		{
 			p = yi << 2;
 			pixels[p] = (r_sum * mul_sum) >> shg_sum;
 			pixels[p + 1] = (g_sum * mul_sum) >> shg_sum;
@@ -877,7 +978,8 @@ RainyDay.prototype.stackBlurCanvasRGB = function(top_x, top_y, width, height, ra
  * Defines a new helper object for Stack Blur Algorithm.
  */
 
-function BlurStack() {
+function BlurStack()
+{
 	this.r = 0;
 	this.g = 0;
 	this.b = 0;
@@ -892,14 +994,17 @@ function BlurStack() {
  * @param r grid size
  */
 
-function CollisionMatrix(x, y, r) {
+function CollisionMatrix(x, y, r)
+{
 	this.resolution = r;
 	this.xc = x;
 	this.yc = y;
 	this.matrix = new Array(x);
-	for (var i = 0; i <= (x + 5); i++) {
+	for (var i = 0; i <= (x + 5); i++)
+	{
 		this.matrix[i] = Array(y);
-		for (var j = 0; j <= (y + 5); ++j) {
+		for (var j = 0; j <= (y + 5); ++j)
+		{
 			this.matrix[i][j] = new DropItem(null);
 		}
 	}
@@ -911,10 +1016,13 @@ function CollisionMatrix(x, y, r) {
  * @forceDelete if true the raindrop will be removed from the matrix
  * @returns collisions if any
  */
-CollisionMatrix.prototype.update = function(drop, forceDelete) {
-	if (drop.gid) {
+CollisionMatrix.prototype.update = function (drop, forceDelete)
+{
+	if (drop.gid)
+	{
 		this.matrix[drop.gmx][drop.gmy].remove(drop);
-		if (forceDelete) {
+		if (forceDelete)
+		{
 			return null;
 		}
 
@@ -923,10 +1031,13 @@ CollisionMatrix.prototype.update = function(drop, forceDelete) {
 		this.matrix[drop.gmx][drop.gmy].add(drop);
 
 		var collisions = this.collisions(drop);
-		if (collisions && collisions.next != null) {
+		if (collisions && collisions.next != null)
+		{
 			return collisions.next;
 		}
-	} else {
+	}
+	else
+	{
 		drop.gid = Math.random().toString(36).substr(2, 9);
 		drop.gmx = Math.floor(drop.x / this.resolution);
 		drop.gmy = Math.floor(drop.y / this.resolution);
@@ -940,7 +1051,8 @@ CollisionMatrix.prototype.update = function(drop, forceDelete) {
  * @param drop raindrop to be checked
  * @returns list of drops that collide with it
  */
-CollisionMatrix.prototype.collisions = function(drop) {
+CollisionMatrix.prototype.collisions = function (drop)
+{
 	var item = new DropItem(null);
 	var first = item;
 
@@ -958,10 +1070,13 @@ CollisionMatrix.prototype.collisions = function(drop) {
  * @param y y position in the matrix
  * @returns last discovered item on the list
  */
-CollisionMatrix.prototype.addAll = function(to, x, y) {
-	if (x > 0 && y > 0 && x < this.xc && y < this.yc) {
+CollisionMatrix.prototype.addAll = function (to, x, y)
+{
+	if (x > 0 && y > 0 && x < this.xc && y < this.yc)
+	{
 		var items = this.matrix[x][y];
-		while (items.next != null) {
+		while (items.next != null)
+		{
 			items = items.next;
 			to.next = new DropItem(items.drop);
 			to = to.next;
@@ -974,7 +1089,8 @@ CollisionMatrix.prototype.addAll = function(to, x, y) {
  * Defines a linked list item.
  */
 
-function DropItem(drop) {
+function DropItem(drop)
+{
 	this.drop = drop;
 	this.next = null;
 }
@@ -983,9 +1099,11 @@ function DropItem(drop) {
  * Adds the raindrop to the end of the list.
  * @param drop raindrop to be added
  */
-DropItem.prototype.add = function(drop) {
+DropItem.prototype.add = function (drop)
+{
 	var item = this;
-	while (item.next != null) {
+	while (item.next != null)
+	{
 		item = item.next;
 	}
 	item.next = new DropItem(drop);
@@ -995,13 +1113,16 @@ DropItem.prototype.add = function(drop) {
  * Removes the raindrop from the list.
  * @param drop raindrop to be removed
  */
-DropItem.prototype.remove = function(drop) {
+DropItem.prototype.remove = function (drop)
+{
 	var item = this;
 	var prevItem = null;
-	while (item.next != null) {
+	while (item.next != null)
+	{
 		prevItem = item;
 		item = item.next;
-		if (item.drop.gid == drop.gid) {
+		if (item.drop.gid == drop.gid)
+		{
 			prevItem.next = item.next;
 		}
 	}
