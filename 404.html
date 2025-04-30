@@ -5,12 +5,16 @@
 <!-- BEGIN HEAD -->
 <head>
 	<meta charset="utf-8"/>
-	<base href="http://rampantlions.github.io/">
     <title>404 - RampantLions on GitHub</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="author" content="Joshua Wiechman" />
     <meta name="description" content="RampantLions on GitHub" />
-    
+
+	<script>
+	  // Dynamically set the base href to root of your GitHub Pages site
+	  document.write('<base href="' + window.location.origin + '/" />');
+	</script>
+
 	<!--stylesheets-->
 	<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="/assets/css/custom.css" />
@@ -23,11 +27,13 @@
     <link rel="apple-touch-icon-precomposed" href="/assets/images/apple-touch-icon-57-precomposed.png" /-->
 	
     <!-- JavaScript plugins (requires jQuery) -->
-    <script type="text/javascript" src="/assets/js/jquery.js"></script>
-    <script type="text/javascript" src="/assets/js/tooltip.js"></script>
-	<script type="text/javascript" src="/assets/js/rainyday.js"></script>
-	<script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/assets/js/custom.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.js"></script>
+    <script type="text/javascript" src="assets/js/tooltip.js"></script>
+	<script type="text/javascript" src="assets/js/rainyday.js"></script>
+	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/js/custom.js"></script>
+
+
 
 </head>
 
@@ -75,51 +81,51 @@
 				
 				<br>
 			
-	 			<a class="facebook" title="Facebook" data-placement="top" data-original-title="Facebook" href="https://www.facebook.com/wiechman"><img src="/assets/images/social/facebook.png" alt="facebook"/></a>
-				<a class="twitter" title="Twitter" data-placement="top" data-original-title="Twitter" href="https://twitter.com/JoshWiechman"><img src="/assets/images/social/twitter.png" alt="twitter"/></a>
-				<a class="skype" title="Skype" data-placement="top" data-original-title="Skype" href="skype:josh.wiechman?userinfo"><img src="/assets/images/social/skype.png" alt="skype"/></a>
-				<a class="pinterest" title="Pinterest" data-placement="top" data-original-title="Pinterest" href="https://www.pinterest.com/RampantLions82/"><img src="/assets/images/social/pinterest.png" alt="pinterest"/></a>
-				<a class="icq" title="Icq" data-placement="top" data-original-title="Icq" href="http://www.icq.com/whitepages/cmd.php?uin=1420384&action=message"><img src="/assets/images/social/icq.png" alt="icq"/></a>
-				<!--a href="#" class="dropbox" title="Dropbox" data-placement="top" data-original-title="Dropbox"><img src="/assets/images/social/dropbox.png" alt="dropbox"/></a-->
-				<a class="soundcloud" title="Soundcloud" data-placement="top" data-original-title="Sondcloud" href="https://soundcloud.com/rampantlions/"><img src="/assets/images/social/soundcloud.png" alt="soundcloud"/></a>
-				<!--a href="#" class="instagram" title="Instagram" data-placement="top" data-original-title="Instagram"><img src="/assets/images/social/instagram.png" alt="instagram"/></a-->
-				<a class="gplus" title="Google Plus" data-placement="top" data-original-title="Google Plus" href="http://google.com/+JoshWiechman"><img src="/assets/images/social/google.png" alt="google plus"/></a>
+	 			<a class="facebook" title="Facebook" data-placement="top" data-original-title="Facebook" href="https://www.facebook.com/wiechman"><img src="assets/images/social/facebook.png" alt="facebook"/></a>
+				<a class="twitter" title="Twitter" data-placement="top" data-original-title="Twitter" href="https://twitter.com/JoshWiechman"><img src="assets/images/social/twitter.png" alt="twitter"/></a>
+				<a class="skype" title="Skype" data-placement="top" data-original-title="Skype" href="skype:josh.wiechman?userinfo"><img src="assets/images/social/skype.png" alt="skype"/></a>
+				<a class="pinterest" title="Pinterest" data-placement="top" data-original-title="Pinterest" href="https://www.pinterest.com/RampantLions82/"><img src="assets/images/social/pinterest.png" alt="pinterest"/></a>
+				<a class="icq" title="Icq" data-placement="top" data-original-title="Icq" href="http://www.icq.com/whitepages/cmd.php?uin=1420384&action=message"><img src="assets/images/social/icq.png" alt="icq"/></a>
+				<!--a href="#" class="dropbox" title="Dropbox" data-placement="top" data-original-title="Dropbox"><img src="assets/images/social/dropbox.png" alt="dropbox"/></a-->
+				<a class="soundcloud" title="Soundcloud" data-placement="top" data-original-title="Sondcloud" href="https://soundcloud.com/rampantlions/"><img src="assets/images/social/soundcloud.png" alt="soundcloud"/></a>
+				<!--a href="#" class="instagram" title="Instagram" data-placement="top" data-original-title="Instagram"><img src="assets/images/social/instagram.png" alt="instagram"/></a-->
+				<a class="gplus" title="Google Plus" data-placement="top" data-original-title="Google Plus" href="http://google.com/+JoshWiechman"><img src="assets/images/social/google.png" alt="google plus"/></a>
 			</div>
 		</div>		
 	</div>
 	
 	<!--canvas animation-->
-    <img id="background" src="/assets/images/00633_oceanhope_1680x1050.jpg" alt="" />
+    <img id="background" src="assets/images/03229_impala_1600x900.jpg" alt="" />
     <div id="cholder">
       	<canvas id="canvas"></canvas>
 	</div>
 	
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-	<script type="text/javascript" src="/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
 	
 	<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-	<script type="text/javascript" src="/assets/js/jquery-1.10.1.min.js"></script>
-	<script type="text/javascript" src="/assets/js/jquery.slimscroll.min.js"></script>
-	<script type="text/javascript" src="/assets/js/jquery.blockui.min.js"></script>  
-	<script type="text/javascript" src="/assets/js/jquery.cookie.min.js"></script>
-	<script type="text/javascript" src="/assets/js/jquery-migrate-1.2.1.min.js"></script>
-	<script type="text/javascript" src="/assets/js/jquery-ui-1.10.1.custom.min.js"></script>
+	<script type="text/javascript" src="assets/js/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript" src="assets/js/jquery.slimscroll.min.js"></script>
+	<script type="text/javascript" src="assets/js/jquery.blockui.min.js"></script>  
+	<script type="text/javascript" src="assets/js/jquery.cookie.min.js"></script>
+	<script type="text/javascript" src="assets/js/jquery-migrate-1.2.1.min.js"></script>
+	<script type="text/javascript" src="assets/js/jquery-ui-1.10.1.custom.min.js"></script>
 
-	<script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/assets/js/twitter-bootstrap-hover-dropdown.min.js"></script>
+	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/js/twitter-bootstrap-hover-dropdown.min.js"></script>
 	
 	<!--[if lt IE 9]>
-		<script type="text/javascript" src="/assets/js/excanvas.min.js"></script>
-		<script type="text/javascript" src="/assets/js/respond.min.js"></script>  
+		<script type="text/javascript" src="assets/js/excanvas.min.js"></script>
+		<script type="text/javascript" src="assets/js/respond.min.js"></script>  
 	<![endif]-->   
 
-	<script type="text/javascript" src="/assets/js/tooltip.js"></script>
-	<script type="text/javascript" src="/assets/js/rainyday.js"></script>
-	<script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/assets/js/custom.js"></script>
+	<script type="text/javascript" src="assets/js/tooltip.js"></script>
+	<script type="text/javascript" src="assets/js/rainyday.js"></script>
+	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/js/custom.js"></script>
 
-	<script type="text/javascript" src="/assets/js/uniform/jquery.uniform.min.js"></script>
-	<script type="text/javascript" src="/assets/js/app.js"></script>  
+	<script type="text/javascript" src="assets/js/uniform/jquery.uniform.min.js"></script>
+	<script type="text/javascript" src="assets/js/app.js"></script>  
 
 	<script>
 		jQuery(document).ready(function() {    
