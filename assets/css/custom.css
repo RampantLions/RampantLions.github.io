@@ -73,23 +73,26 @@ body {
 
 h1 {
   text-transform: uppercase;
-  letter-spacing: 4px;
+  letter-spacing: clamp(2px, 1vw, 4px);
   font-weight: normal;
-  font-size: 22px;
+  font-size: clamp(16px, 4vw, 22px);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
 }
 
 h2 {
   font-family: MarkPro-Heavy;
   text-transform: uppercase;
-  letter-spacing: 20px;
-  font-size: 200px;
-  margin:-30px 0 20px 0;
+  letter-spacing: clamp(6px, 2vw, 20px);
+  font-size: clamp(80px, 22vw, 200px);
+  margin: 0 0 20px 0;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
 }
 
 p {
   line-height: 1.6em;
   text-align: center;
   font-size: 16px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
 }
 
 a {
@@ -103,7 +106,16 @@ a:hover {
   color: #444;
 }
 
-h2 span{margin:0px;}
+.error-code { color: #fff; }
+.error-code span {
+  display: inline-block;
+  color: #4a7bc1;
+  animation: oPulse 4s ease-in-out infinite;
+}
+@keyframes oPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
 
 /*----------------------------------------------*/
 /* 4.0 Content Styles */
@@ -127,37 +139,105 @@ h2 span{margin:0px;}
   display:inline-block;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  transition: background 0.2s ease-out, color 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.button-white:hover {
+  background: rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #fff;
+}
+.button-white:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.6);
 }
 
 /*----------------------------------------------*/
 /* 5.0 Footer */
 /*----------------------------------------------*/
 .footer {
-  padding: 20px 10px 0px;
-  width: 320px;
+  width: 100%;
+  max-width: 360px;
   margin: 0 auto;
+  padding: 20px 10px 40px;
   text-align: center;
 }
 .footer .handle {
   font-style: italic;
-  text-decoration:none;
+  text-decoration: none;
   text-transform: uppercase;
   font-size: 11px;
 }
 .footer .byline {
-  font-size: 18px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   text-decoration: none;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
 }
-.footer a img {
-  margin: 0 4px;
-  vertical-align: middle;
+.footer .byline .name {
+  display: block;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
-.error-code {
-  color: #1B2E46;
+.footer .byline .title {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.75;
 }
+
 .action-links {
   text-align: center;
+}
+
+/* Vignette over the rainy canvas — works regardless of which background image is used */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.65) 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Staggered entry animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.error-code   { animation: fadeUp 0.8s 0.15s both; }
+h1            { animation: fadeUp 0.8s 0.35s both; }
+.content > p  { animation: fadeUp 0.8s 0.50s both; }
+.action-links { animation: fadeUp 0.8s 0.65s both; }
+.footer       { animation: fadeUp 0.8s 0.85s both; }
+
+/* Allow scrolling on short viewports (e.g. landscape phones) */
+@media (max-height: 700px) {
+  body { overflow-y: auto; }
+}
+
+/* Honor reduced-motion: kill all motion and replace canvas with a static blurred image */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  #cholder { display: none; }
+  #background {
+    display: block;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(20px) brightness(0.55);
+    z-index: -1;
+  }
 }
 
 /*----------------------------------------------*/
