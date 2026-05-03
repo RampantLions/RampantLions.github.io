@@ -1,10 +1,39 @@
 "use strict";
+
 function getURLParameter(name) {
 	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 }
 
+var BACKGROUNDS = {
+	impala:    'assets/images/03229_impala_1600x900.jpg',
+	ocean:     'assets/images/00633_oceanhope_1680x1050.jpg',
+	eagle:     'assets/images/03244_thedomainofthewhitetailedeagle_1600x900.jpg',
+	astronaut: 'assets/images/wp13763896-aesthetic-astronaut-desktop-wallpapers.jpg',
+	laptop:    'assets/images/wp15282314-astronaut-laptop-wallpapers.jpg',
+	space:     'assets/images/wp15282362-astronaut-laptop-wallpapers.jpg'
+};
+
+function pickBackground() {
+	var requested = getURLParameter('bg');
+	if (requested && BACKGROUNDS[requested]) return BACKGROUNDS[requested];
+	var keys = Object.keys(BACKGROUNDS);
+	return BACKGROUNDS[keys[Math.floor(Math.random() * keys.length)]];
+}
+
 function demo() {
 	var image = document.getElementById('background');
+	var desiredSrc = pickBackground();
+
+	// Swap to the chosen background so the static fallback (reduced-motion) and
+	// the rainy canvas both reflect the same image.
+	if (image.src.split('/').pop() !== desiredSrc.split('/').pop()) {
+		image.src = desiredSrc;
+	}
+
+	var prefersReducedMotion = window.matchMedia &&
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	if (prefersReducedMotion) return;
+
 	var startRain = function() {
 		var engine = new RainyDay('canvas','background', window.innerWidth, window.innerHeight, 1, getURLParameter("blur") || 20);
 		var preset = getURLParameter("preset") || 2;
@@ -23,26 +52,10 @@ function demo() {
 			engine.rain([ engine.preset(0, 2, 0.5), engine.preset(4, 4, 1) ], 50);
 		}
 	};
+
 	if (image.complete && image.naturalWidth > 0) {
 		startRain();
 	} else {
-		image.addEventListener('load', startRain);
-	}
-
-	var youtube = getURLParameter("youtube");
-	if (youtube) {
-		var div = document.getElementById("sound");
-		var player = document.createElement('iframe');
-		player.frameborder = "0";
-		if (!getURLParameter("novideo")) {
-			div.style.zIndex = 1000;
-			player.setAttribute("class", "video");
-		} else {
-			player.height = "1";
-			player.width = "1";
-		}
-		player.src = "https://youtube.com/embed/" + youtube + "?autoplay=1&controls=0&showinfo=0&autohide=1&loop=1";
-		div.appendChild(player);
+		image.addEventListener('load', startRain, { once: true });
 	}
 }
-
