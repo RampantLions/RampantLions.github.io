@@ -5,7 +5,7 @@ function getURLParameter(name) {
 
 function demo() {
 	var image = document.getElementById('background');
-	image.onload = function() {
+	var startRain = function() {
 		var engine = new RainyDay('canvas','background', window.innerWidth, window.innerHeight, 1, getURLParameter("blur") || 20);
 		var preset = getURLParameter("preset") || 2;
 		if (preset == 1) {
@@ -23,8 +23,11 @@ function demo() {
 			engine.rain([ engine.preset(0, 2, 0.5), engine.preset(4, 4, 1) ], 50);
 		}
 	};
-	image.crossOrigin = "anonymous";
-	image.src="http://rampantlions.github.io/assets/images/03229_impala_1600x900.jpg";
+	if (image.complete && image.naturalWidth > 0) {
+		startRain();
+	} else {
+		image.addEventListener('load', startRain);
+	}
 
 	var youtube = getURLParameter("youtube");
 	if (youtube) {
