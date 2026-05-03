@@ -132,12 +132,32 @@ h2 span{margin:0px;}
 /*----------------------------------------------*/
 /* 5.0 Footer */
 /*----------------------------------------------*/
-.footer {padding:20px 10px 0px;}
+.footer {
+  padding: 20px 10px 0px;
+  width: 320px;
+  margin: 0 auto;
+  text-align: center;
+}
 .footer .handle {
   font-style: italic;
   text-decoration:none;
   text-transform: uppercase;
   font-size: 11px;
+}
+.footer .byline {
+  font-size: 18px;
+  margin-bottom: 15px;
+  text-decoration: none;
+}
+.footer a img {
+  margin: 0 4px;
+  vertical-align: middle;
+}
+.error-code {
+  color: #1B2E46;
+}
+.action-links {
+  text-align: center;
 }
 
 /*----------------------------------------------*/
